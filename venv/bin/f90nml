@@ -1,5 +1,0 @@
-#!/home/bhargav/ai_bhop/venv/bin/python3
-
-from f90nml import cli
-
-cli.parse()
