@@ -1,0 +1,47 @@
+fallback: True
+read:
+  meshtype: hdf5
+  files: ["trappedvtx.mesh.h5"]
+  patch_list:
+    - Inlet
+    - Outlet
+    - PerioLeft
+    - PerioRight
+    - WallIn1
+    - WallIn2
+    - WallIn3
+    - MultiperfIn
+    - WallIn4
+    - InletHole
+    - WallOut
+    - CanyonUp
+    - CanyonBottom
+    - CanyonDown
+    - InletFilm
+interpolate: 
+  meshtype: hdf5
+  files: ["default.mesh.h5", "default_inst.sol.h5"]
+  patch_list:
+    - Inlet
+    - Outlet
+    - PerioLeft
+    - PerioRight
+    - WallIn1
+    - WallIn2
+    - WallIn3
+    - MultiperfIn
+    - WallIn4
+    - InletHole
+    - WallOut
+    - CanyonUp
+    - CanyonBottom
+    - CanyonDown
+    - InletFilm
+periodize:
+  - leader: PerioRight
+    follower: PerioLeft
+write:
+  dump_geofile: False
+  casename: "new"
+  casetype: hdf5
+  options: {}

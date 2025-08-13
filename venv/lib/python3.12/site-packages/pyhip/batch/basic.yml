@@ -1,0 +1,42 @@
+fallback: True
+read:
+  meshtype: hdf5
+  files: ["trappedvtx.mesh.h5"]
+  # patch_list:
+  #   - Inlet
+  #   - Outlet
+  #   - PerioLeft
+  #   - PerioRight
+  #   - WallIn1
+  #   - WallIn2
+  #   - WallIn3
+  #   - MultiperfIn
+  #   - WallIn4
+  #   - InletHole
+  #   - WallOut
+  #   - CanyonUp
+  #   - CanyonBottom
+  #   - CanyonDown
+  #   - InletFilm
+# transform:
+#   scale:
+#     scaling_factor:
+#       - 2.
+#       - 2.
+#       - 2.
+#   rotate:
+#     angles:
+#       x: 0.
+#   translate:
+#     direction: 
+#       - 0.1
+#       - 0.
+#       - 0.
+# periodize:
+#   - leader: PerioRight
+#     follower: PerioLeft
+write:
+  dump_geofile: False
+  casetype: hdf5
+  casename: "new"
+  options: {}

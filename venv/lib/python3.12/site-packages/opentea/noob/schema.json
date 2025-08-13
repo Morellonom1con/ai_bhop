@@ -1,0 +1,1552 @@
+{
+    "name": "example_complex",
+    "ot_type": "solver",
+    "properties": {
+        "controle_existif_require": {
+            "name": "controle_existif_require",
+            "order": "20",
+            "ot_type": "tab",
+            "properties": {
+                "controle": {
+                    "name": "controle",
+                    "ot_type": "model",
+                    "properties": {
+                        "controle_ei": {
+                            "default": false,
+                            "name": "controle_ei",
+                            "ot_type": "onoff",
+                            "title": "Existif on/off",
+                            "type": "boolean"
+                        },
+                        "desc": {
+                            "default": "\n        1 verifier que ce widget peut afficher ou effacer instantanement :\n        [item=un modele en dessous]\n        [item=un onglet escamotable juste apres]\n        [item=deux modeles supplementaires dans l'onglet \"ou exclusif\"]\n        [item=une colonne suppl\u00e9mentaire dans l'onglet \"multiple\"]\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Controle Existif",
+                    "type": "object"
+                },
+                "dummy_mod1": {
+                    "existif": {
+                        "node": "controle_ei",
+                        "operator": "==",
+                        "value": true
+                    },
+                    "name": "dummy_mod1",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Ce modele ne doit s'afficher que si le controle \"Existif on/off\" est mis a 1.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Modele escamotable",
+                    "type": "object"
+                },
+                "expert_model": {
+                    "name": "expert_model",
+                    "ot_layout": "onrequest",
+                    "ot_type": "model",
+                    "properties": {
+                        "a1": {
+                            "default": 1.0,
+                            "name": "a1",
+                            "ot_type": "double",
+                            "title": "a1",
+                            "type": "number"
+                        },
+                        "a2": {
+                            "default": 1.0,
+                            "name": "a2",
+                            "ot_type": "double",
+                            "title": "a2",
+                            "type": "number"
+                        },
+                        "a3": {
+                            "default": 1.0,
+                            "name": "a3",
+                            "ot_type": "double",
+                            "title": "a3",
+                            "type": "number"
+                        },
+                        "desc": {
+                            "default": "\n        4 Ce modele ne s'affiche que sur demande. Son contenu reste  accessible aux scripts Python, au contraire des elements caches par des XOR et des EXISTIFs. \n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "docu": {
+                            "default": "\n        Docu model onrequest\n    ",
+                            "name": "docu",
+                            "ot_type": "docu",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Modele expert",
+                    "type": "object"
+                },
+                "opt_model": {
+                    "name": "opt_model",
+                    "ot_default": false,
+                    "ot_type": "modelonoff",
+                    "properties": {
+                        "a1": {
+                            "default": 1.0,
+                            "name": "a1",
+                            "ot_type": "double",
+                            "title": "a1",
+                            "type": "number"
+                        },
+                        "a2": {
+                            "default": 1.0,
+                            "name": "a2",
+                            "ot_type": "double",
+                            "title": "a2",
+                            "type": "number"
+                        },
+                        "a3": {
+                            "default": 1.0,
+                            "name": "a3",
+                            "ot_type": "double",
+                            "title": "a3",
+                            "type": "number"
+                        },
+                        "desc": {
+                            "default": "\n        5 Ce modele ne s'affiche que sur demande. Son contenu n'est plus  accessible aux scripts Python, comme des elements caches par des XOR et des EXISTIFs. \n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "docu": {
+                            "default": "\n        Docu modelonoff\n    ",
+                            "name": "docu",
+                            "ot_type": "docu",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Modele optionnel",
+                    "type": "object"
+                },
+                "source_req_ndim": {
+                    "name": "source_req_ndim",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        2 verifier -UNE FOIS L'ONGLET VALIDE- les elements dependant de ndim sont affectes :\n        [item= dans cet onglet pour la liste require ndim]\n        [item= dans l'onglet \"Multiples\"]\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "ndim_choice": {
+                            "default": "two",
+                            "enum": [
+                                "two",
+                                "three"
+                            ],
+                            "enum_titles": [
+                                "2-D",
+                                "3-D"
+                            ],
+                            "name": "ndim_choice",
+                            "ot_type": "choice",
+                            "title": "Dimensions",
+                            "type": "string"
+                        },
+                        "req_ndim": {
+                            "name": "req_ndim",
+                            "ot_type": "list_double_gt0",
+                            "title": "Require ndim",
+                            "type": "array",
+                            "items": { 
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "title": "Controle require ndim",
+                    "type": "object"
+                },
+                "source_req_patch": {
+                    "name": "source_req_patch",
+                    "ot_type": "model",
+                    "properties": {
+                        "choice_patches": {
+                            "enum": [
+                                "a",
+                                "b",
+                                "c"
+                            ],
+                            "enum_titles": [
+                                "a",
+                                "b",
+                                "c"
+                            ],
+                            "name": "choice_patches",
+                            "ot_type": "choice",
+                            "title": "Choix patches",
+                            "type": "string"
+                        },
+                        "desc": {
+                            "default": "\n        3 verifier -UNE FOIS L'ONGLET VALIDE- les elements dependantnombre de patches sont affet\u00e9s :\n        [item= dans cet onglet pour la liste des patches et le choix]\n        [item= dans l'onglet \"Multiples\"]\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "npatches": {
+                            "default": 4,
+                            "exclusiveMaximum": true,
+                            "exclusiveMinimum": true,
+                            "maximum": 200,
+                            "minimum": 0,
+                            "name": "npatches",
+                            "ot_type": "integer_gt0_lt200",
+                            "title": "Nombre patches",
+                            "type": "integer"
+                        }
+                    },
+                    "title": "Controle require patches",
+                    "type": "object"
+                }
+            },
+            "script": "process_controle.py",
+            "title": "Controle If/Req.",
+            "type": "object"
+        },
+        "data3d": {
+            "name": "data3d",
+            "order": "60",
+            "ot_type": "tab",
+            "properties": {
+                "coque1": {
+                    "name": "coque1",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        First parametric shell\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "ngrid": {
+                            "default": 4,
+                            "maximum": 10,
+                            "minimum": 2,
+                            "name": "ngrid",
+                            "ot_type": "integer_ge2_le10",
+                            "title": "grid samples",
+                            "type": "integer"
+                        },
+                        "rad1": {
+                            "default": 0.1,
+                            "exclusiveMinimum": true,
+                            "minimum": 0.0,
+                            "name": "rad1",
+                            "ot_type": "double_gt0",
+                            "title": "rayon 1",
+                            "type": "number"
+                        },
+                        "rad2": {
+                            "default": 0.15,
+                            "exclusiveMinimum": true,
+                            "minimum": 0.0,
+                            "name": "rad2",
+                            "ot_type": "double_gt0",
+                            "title": "rayon 2",
+                            "type": "number"
+                        },
+                        "t1": {
+                            "default": -30.0,
+                            "exclusiveMinimum": true,
+                            "maximum": 180.0,
+                            "minimum": -180.0,
+                            "name": "t1",
+                            "ot_type": "double_gt-180_le180",
+                            "title": "angle 1 (deg)",
+                            "type": "number"
+                        },
+                        "t2": {
+                            "default": 30.0,
+                            "exclusiveMaximum": true,
+                            "exclusiveMinimum": true,
+                            "maximum": 180.0,
+                            "minimum": -180.0,
+                            "name": "t2",
+                            "ot_type": "double_gt-180_lt180",
+                            "title": "angle 2 (deg)",
+                            "type": "number"
+                        }
+                    },
+                    "title": "Shell Nb. 1",
+                    "type": "object"
+                },
+                "coque2": {
+                    "name": "coque2",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Second parametric shell\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "ngrid": {
+                            "default": 6,
+                            "maximum": 10,
+                            "minimum": 2,
+                            "name": "ngrid",
+                            "ot_type": "integer_ge2_le10",
+                            "title": "grid samples",
+                            "type": "integer"
+                        },
+                        "rad1": {
+                            "default": 0.2,
+                            "exclusiveMinimum": true,
+                            "minimum": 0.0,
+                            "name": "rad1",
+                            "ot_type": "double_gt0",
+                            "title": "rayon 1",
+                            "type": "number"
+                        },
+                        "rad2": {
+                            "default": 0.25,
+                            "exclusiveMinimum": true,
+                            "minimum": 0.0,
+                            "name": "rad2",
+                            "ot_type": "double_gt0",
+                            "title": "rayon 2",
+                            "type": "number"
+                        },
+                        "t1": {
+                            "default": 0.0,
+                            "exclusiveMinimum": true,
+                            "maximum": 180.0,
+                            "minimum": -180.0,
+                            "name": "t1",
+                            "ot_type": "double_gt-180_le180",
+                            "title": "angle 1 (deg)",
+                            "type": "number"
+                        },
+                        "t2": {
+                            "default": 90.0,
+                            "exclusiveMaximum": true,
+                            "exclusiveMinimum": true,
+                            "maximum": 180.0,
+                            "minimum": -180.0,
+                            "name": "t2",
+                            "ot_type": "double_gt-180_lt180",
+                            "title": "angle 2 (deg)",
+                            "type": "number"
+                        }
+                    },
+                    "title": "Shell Nb. 1",
+                    "type": "object"
+                },
+                "file3d": {
+                    "name": "file3d",
+                    "ot_type": "model",
+                    "properties": {
+                        "casefile": {
+                            "name": "casefile",
+                            "ot_filter": [
+                                "case"
+                            ],
+                            "ot_type": "file",
+                            "title": "ensight .case file",
+                            "type": "string"
+                        },
+                        "desc": {
+                            "default": "\n        Ensight case file, with the correspondant geo file, involiving bar2 elements in ASCII.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Ensight file",
+                    "type": "object"
+                },
+                "modele_desc": {
+                    "name": "modele_desc",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Testing the 3d viewer of OpenTEA\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Description",
+                    "type": "object"
+                },
+                "test_3d": {
+                    "default": "Not Implemented!",
+                    "name": "test_3d",
+                    "ot_type": "view3d",
+                    "type": "string"
+                }
+            },
+            "script": "process_data3d.py",
+            "title": "Visu3D",
+            "type": "object"
+        },
+        "entries": {
+            "name": "entries",
+            "order": "10",
+            "ot_type": "tab",
+            "properties": {
+                "choix": {
+                    "name": "choix",
+                    "ot_type": "model",
+                    "properties": {
+                        "choix1": {
+                            "default": "item1",
+                            "enum": [
+                                "item1",
+                                "item2",
+                                "item3"
+                            ],
+                            "enum_titles": [
+                                "item1",
+                                "item2",
+                                "item3"
+                            ],
+                            "name": "choix1",
+                            "ot_type": "choice",
+                            "title": "Choix 3 items",
+                            "type": "string"
+                        },
+                        "choix2": {
+                            "default": "item1",
+                            "enum": [
+                                "item1",
+                                "item2",
+                                "item3",
+                                "item4"
+                            ],
+                            "enum_titles": [
+                                "Titre 1",
+                                "Titre 2",
+                                "Titre 3",
+                                "Titre 4"
+                            ],
+                            "name": "choix2",
+                            "ot_type": "choice",
+                            "title": "Choix 4 items",
+                            "type": "string"
+                        },
+                        "desc": {
+                            "default": "\n        3 verifier l'affichage des choix, ainsi que la presence de titres dans le second choix.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "sel1": {
+                            "name": "sel1",
+                            "ot_type": "selection",
+                            "title": "Selection 6",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Choices",
+                    "type": "object"
+                },
+                "comment": {
+                    "name": "comment",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        []4 verifier l'affichage des commentaires.[]\n        5 verifier qu'au \"process\" le texte du haut est reproduit dans le texte du bas.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Comments",
+                    "type": "object"
+                },
+                "ent": {
+                    "name": "ent",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        1 verifier l'affichage et les tests automatiques des entr\u00e9es simples.\n        2 verifier l'entree \"cluster\", possibilit\u00e9 d'ajouter et d'enlever des elements.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        },
+                        "ent0": {
+                            "default": false,
+                            "name": "ent0",
+                            "ot_type": "onoff",
+                            "title": "Essai onoff",
+                            "type": "boolean"
+                        },
+                        "ent1": {
+                            "default": 1.3,
+                            "exclusiveMaximum": true,
+                            "exclusiveMinimum": true,
+                            "maximum": 2.0,
+                            "minimum": 1.0,
+                            "name": "ent1",
+                            "ot_type": "double_gt1_lt2",
+                            "title": "Essai double_gt1_lt2",
+                            "type": "number"
+                        },
+                        "ent2": {
+                            "default": 0,
+                            "maximum": 1,
+                            "minimum": -1,
+                            "name": "ent2",
+                            "ot_type": "integer_ge-1_le1",
+                            "title": "Essai integer_ge-1_le1",
+                            "type": "integer"
+                        },
+                        "ent3": {
+                            "default": "dummy",
+                            "name": "ent3",
+                            "ot_type": "string",
+                            "title": "Essai string_streq4",
+                            "type": "string"
+                        },
+                        "file4": {
+                            "name": "file4",
+                            "ot_filter": [
+                                "h5"
+                            ],
+                            "ot_type": "file",
+                            "title": "Choix fichier (*.h5)",
+                            "type": "string"
+                        },
+                        "file5": {
+                            "name": "file5",
+                            "ot_type": "file",
+                            "title": "Choix repertoire",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Simple entries",
+                    "type": "object"
+                }
+            },
+            "script": "process_entries.py",
+            "title": "Entries",
+            "type": "object"
+        },
+        "escamotable": {
+            "existif": {
+                "node": "controle_ei",
+                "operator": "==",
+                "value": true
+            },
+            "name": "escamotable",
+            "order": "25",
+            "ot_type": "tab",
+            "properties": {
+                "model_dummy": {
+                    "name": "model_dummy",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        1 cet onglet est escamotable. Il depend du controle existif de l'onglet precedent.\n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Description",
+                    "type": "object"
+                }
+            },
+            "title": "Escamotable",
+            "type": "object"
+        },
+        "graphes": {
+            "name": "graphes",
+            "order": "50",
+            "ot_type": "tab",
+            "properties": {
+                "modele_desc": {
+                    "name": "modele_desc",
+                    "ot_type": "model",
+                    "properties": {},
+                    "title": "Description",
+                    "type": "object"
+                }
+            },
+            "script": "process_graph.py",
+            "title": "Graphiques",
+            "type": "object"
+        },
+        "multiple": {
+            "name": "multiple",
+            "order": "40",
+            "ot_type": "tab",
+            "properties": {
+                "modele_desc": {
+                    "name": "modele_desc",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Le widget suivant est un \"multiple\" avec dependance. Verifier que :\n        [item= 1 on peut modifier la mise en donnee de chaque ligne]\n        [item= 2 reordonner les lignes en cliquant sur les colonnes]\n        [item= 3 le existif controle bien le choix des C.L. liquides]\n        [item= 4 on peut renommer chaque element de la liste]\n        [item= 5 on peut copier/coller chaque element de la liste]\n        \n        \n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Description ",
+                    "type": "object"
+                },
+                "mul_cont": {
+                    "items": {
+                        "properties": {
+                            "bcliq": {
+                                "default": "inlet",
+                                "name": "bcliq",
+                                "oneOf": [
+                                    {
+                                        "properties": {
+                                            "inlet": {
+                                                "name": "inlet",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                                Inlet boundary\n                        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "outlet": {
+                                                "name": "outlet",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                                Outlet boundary\n                        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "exclusiveMinimum": true,
+                                                        "minimum": 0.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double_gt0",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "title": "outlet",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "outlet"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "wall": {
+                                                "name": "wall",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                                Wall boundary\n                        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "title": "wall",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "wall"
+                                        ]
+                                    }
+                                ],
+                                "ot_type": "xor",
+                                "title": "B.C. liquid"
+                            },
+                            "bnd_gas": {
+                                "default": "wall",
+                                "name": "bnd_gas",
+                                "oneOf": [
+                                    {
+                                        "properties": {
+                                            "inlet": {
+                                                "name": "inlet",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet8": {
+                                                "name": "inlet8",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet8",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet8"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "outlet": {
+                                                "name": "outlet",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Outlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "exclusiveMinimum": true,
+                                                        "minimum": 0.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double_gt0",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "title": "outlet",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "outlet"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet7": {
+                                                "name": "inlet7",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet7",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet7"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet6": {
+                                                "name": "inlet6",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet6",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet6"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet4": {
+                                                "name": "inlet4",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet4",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet4"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet5": {
+                                                "name": "inlet5",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet5",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet5"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet1": {
+                                                "name": "inlet1",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet1",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet1"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "wall": {
+                                                "name": "wall",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Wall boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "title": "wall",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "wall"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet2": {
+                                                "name": "inlet2",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet2",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet2"
+                                        ]
+                                    },
+                                    {
+                                        "properties": {
+                                            "inlet3": {
+                                                "name": "inlet3",
+                                                "ot_type": "model",
+                                                "properties": {
+                                                    "desc": {
+                                                        "default": "\n                Inlet boundary\n        ",
+                                                        "name": "desc",
+                                                        "ot_type": "desc",
+                                                        "title": "",
+                                                        "type": "string"
+                                                    },
+                                                    "pressure": {
+                                                        "default": 101325.0,
+                                                        "name": "pressure",
+                                                        "ot_type": "double",
+                                                        "title": "pressure",
+                                                        "type": "number"
+                                                    },
+                                                    "tempoerature": {
+                                                        "default": 300.0,
+                                                        "name": "tempoerature",
+                                                        "ot_type": "double",
+                                                        "title": "tempoerature",
+                                                        "type": "number"
+                                                    },
+                                                    "velocity": {
+                                                        "name": "velocity",
+                                                        "ot_type": "list_double",
+                                                        "title": "velocity",
+                                                        "type": "array",
+                                                            "items": { 
+                                                                "type": "number"
+                                                            }
+                                                    }
+                                                },
+                                                "title": "inlet3",
+                                                "type": "object"
+                                            }
+                                        },
+                                        "required": [
+                                            "inlet3"
+                                        ]
+                                    }
+                                ],
+                                "ot_type": "xor",
+                                "title": "BNS GAS"
+                            },
+                            "param-nb": {
+                                "default": 42,
+                                "minimum": 0,
+                                "name": "param-nb",
+                                "ot_type": "integer_ge0",
+                                "title": "param-order",
+                                "type": "integer"
+                            },
+                            "name": {
+                                "default": "unnamed",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "title": "Boundary cond."
+                    },
+                    "name": "mul_cont",
+                    "ot_type": "multiple",
+                    "require": "list_patches",
+                    "type": "array"
+                },
+                "status_multiple": {
+                    "enum": [
+                        "-1",
+                        "0",
+                        "1"
+                    ],
+                    "enum_titles": [
+                        "Statut est faux (vaut -1)",
+                        "Statut est inconnu (vaut 0)",
+                        "Statut est vrai (vaut 1)"
+                    ],
+                    "name": "status_multiple",
+                    "ot_type": "status",
+                    "type": "string"
+                }
+            },
+            "script": "process_multiple.py",
+            "title": "Multiple",
+            "type": "object"
+        },
+        "multiple2": {
+            "name": "multiple2",
+            "order": "41",
+            "ot_type": "tab",
+            "properties": {
+                "modele_desc": {
+                    "name": "modele_desc",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Le widget suivant est un \"multiple\" sans  dependance. Verifier que :\n        [item= 1 on peut modifier le nom de chaque item]\n        [item= 2 on peut ajouter et retirer des items]\n       \n        \n        \n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Description ",
+                    "type": "object"
+                },
+                "mul_cont": {
+                    "items": {
+                        "properties": {
+                            "param-order": {
+                                "default": 1,
+                                "minimum": 0,
+                                "name": "param-order",
+                                "ot_type": "integer_ge0",
+                                "title": "param-order",
+                                "type": "integer"
+                            },
+                            "param_onoff": {
+                                "default": false,
+                                "name": "param_onoff",
+                                "ot_type": "onoff",
+                                "title": "param_onoff",
+                                "type": "boolean"
+                            }
+                        },
+                        "type" : "object",
+                        "title": "Boundary cond."
+                    },
+                    "name": "mul_cont",
+                    "ot_type": "multiple",
+                    "type": "array"
+                }
+            },
+            "title": "Multiple Independent",
+            "type": "object"
+        },
+        "ouexclusif": {
+            "name": "ouexclusif",
+            "order": "30",
+            "ot_type": "tab",
+            "properties": {
+                "modele_desc": {
+                    "name": "modele_desc",
+                    "ot_type": "model",
+                    "properties": {
+                        "desc": {
+                            "default": "\n        Le widget suivant est un \"ou exclusif\". Verifier que :\n        [item= 1 on peut changer de modele]\n        [item= 2 le groupement des options est effectue]\n        [item= 3 le existif controle bien les modeles A3, B3, et 4 ]\n        [item= 4 si le modele 4 est selectionne, et que le existif le rend inaccessible, le XOR change automatiquement de choix.]    \n    ",
+                            "name": "desc",
+                            "ot_type": "desc",
+                            "title": "",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Description ",
+                    "type": "object"
+                },
+                "ouex_mod": {
+                    "default": "modele_0",
+                    "name": "ouex_mod",
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "modele_0": {
+                                    "name": "modele_0",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele zero\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "title": "Modele 0",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_0"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_a_1": {
+                                    "name": "modele_a_1",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele aaa un\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        },
+                                        "toto1": {
+                                            "default": 300.0,
+                                            "exclusiveMinimum": true,
+                                            "minimum": 0.0,
+                                            "name": "toto1",
+                                            "ot_type": "double_gt0",
+                                            "title": "Entry",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Modele A 1 (param)",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_a_1"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_a_2": {
+                                    "name": "modele_a_2",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele aaa deux\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        },
+                                        "sel2": {
+                                            "name": "sel2",
+                                            "ot_type": "selection",
+                                            "title": "Selection ",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "title": "Modele A 2 (selection)",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_a_2"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_a_3": {
+                                    "existif": {
+                                        "node": "controle_ei",
+                                        "operator": "==",
+                                        "value": true
+                                    },
+                                    "name": "modele_a_3",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "choice5": {
+                                            "enum": [
+                                                "a",
+                                                "b",
+                                                "c"
+                                            ],
+                                            "enum_titles": [
+                                                "a",
+                                                "b",
+                                                "c"
+                                            ],
+                                            "name": "choice5",
+                                            "ot_type": "choice",
+                                            "title": "Choice ",
+                                            "type": "string"
+                                        },
+                                        "desc": {
+                                            "default": "\n            Modele aaa trois\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "title": "Modele A 3 (choice)",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_a_3"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_b_1": {
+                                    "name": "modele_b_1",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele bbb un\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        },
+                                        "p1": {
+                                            "default": 0,
+                                            "name": "p1",
+                                            "ot_type": "integer",
+                                            "title": "Param normal ",
+                                            "type": "integer"
+                                        },
+                                        "p2": {
+                                            "default": 0,
+                                            "name": "p2",
+                                            "ot_type": "integer",
+                                            "title": "Param si controle_ei ==1 ",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "title": "Modele B 1 (existif)",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_b_1"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_b_2": {
+                                    "name": "modele_b_2",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele bbb deux\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        },
+                                        "toto3": {
+                                            "name": "toto3",
+                                            "ot_type": "list_double_gt0",
+                                            "title": "Entry",
+                                            "type": "array",
+                                            "items": { 
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    "title": "Modele B 2 (list) ",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_b_2"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_b_3": {
+                                    "existif": {
+                                        "node": "controle_ei",
+                                        "operator": "==",
+                                        "value": true
+                                    },
+                                    "name": "modele_b_3",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele bbb trois\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "title": "Modele B 3",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_b_3"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "modele_4": {
+                                    "existif": {
+                                        "node": "controle_ei",
+                                        "operator": "==",
+                                        "value": true
+                                    },
+                                    "name": "modele_4",
+                                    "ot_type": "model",
+                                    "properties": {
+                                        "desc": {
+                                            "default": "\n            Modele quatre\n        ",
+                                            "name": "desc",
+                                            "ot_type": "desc",
+                                            "title": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "title": "Modele 4",
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "modele_4"
+                            ]
+                        }
+                    ],
+                    "ot_type": "xor",
+                    "title": "Ou exclusif"
+                }
+            },
+            "script": "process_ouexclusif.py",
+            "title": "Ou exclusif",
+            "type": "object"
+        }
+    },
+    "title": "Example complex",
+    "type": "object"
+}

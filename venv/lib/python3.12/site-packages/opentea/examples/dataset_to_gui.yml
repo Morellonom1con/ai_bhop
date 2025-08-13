@@ -1,0 +1,71 @@
+controle_existif_require:
+  controle:
+    controle_ei: false
+  expert_model:
+    a1: 1.0
+    a2: 1.0
+    a3: 1.0
+  opt_model:
+    a1: 1.0
+    a2: 1.0
+    a3: 1.0
+  source_req_ndim:
+    ndim_choice: two
+    req_ndim:
+    - x
+    - y
+  source_req_patch:
+    choice_patches: a
+    list_patches:
+    - patch_#0
+    - patch_#1
+    - patch_#2
+    - patch_#3
+    npatches: 4
+data3d:
+  coque1:
+    ngrid: 4
+    rad1: 0.1
+    rad2: 0.15
+    t1: -30.0
+    t2: 30.0
+  coque2:
+    ngrid: 6
+    rad1: 0.2
+    rad2: 0.25
+    t1: 0.0
+    t2: 90.0
+entries:
+  choix:
+    choix1: item1
+    choix2: item1
+  ent:
+    ent0: false
+    ent1: 1.3
+    ent2: 0
+    ent3: dummy
+    file4: any.h5
+    file5: anyfolder
+multiple:
+  mul_cont:
+  - bcliq:
+      inlet:
+        velocity:
+        - 0.0
+    bnd_gas:
+      inlet:
+        pressure: 101325.0
+        tempoerature: 300.0
+        velocity:
+        - 0.0
+    name: single_patch
+    param-nb: 42
+  status_multiple: '0'
+multiple2:
+  mul_cont:
+  - name: unnamed
+    param-order: 1
+    param_onoff: false
+ouexclusif:
+  ouex_mod:
+    modele_0: null

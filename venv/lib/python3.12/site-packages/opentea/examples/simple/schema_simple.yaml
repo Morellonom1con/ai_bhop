@@ -1,0 +1,134 @@
+---
+title: "All you can Eat..."
+type: object
+description: "root desc"
+properties:
+  first_tab:
+    type: object
+    title: First tab.
+    order: 20
+    description: "Tab1 desc"
+    properties:
+      first_block:
+        type: object
+        description: >
+
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
+          ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+          in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur 
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+          anim id est laborum.
+        documentation: >
+          # title
+          
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud [avbp website](http://www.cerfacs.fr/avbp7x/) exercitation ullamco laboris nisi 
+          ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+          in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur 
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+          
+          ## subtitle
+
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud [avbp website](http://www.cerfacs.fr/avbp7x/) exercitation ullamco laboris nisi 
+          ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+          in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur 
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+          
+
+          ![image](test-pattern-tv.jpg)
+
+          |------|-----–|
+          | addd | gjkg |
+          |------|-----–|
+          | &(§) | 2345 |
+          |------|-----–|
+          
+
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud [avbp website](http://www.cerfacs.fr/avbp7x/) exercitation ullamco laboris nisi 
+          ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+          in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur 
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+          anim id est laborum.
+        image: test-pattern-tv.jpg
+        properties:
+          name:
+            title: "Name"
+            type: string
+            default: "john doe"
+            description: >
+              Name description is here. Whata daya want more ?
+          age:
+            title: "Age"
+            type: integer
+            default: 42
+          membership:
+            title: "Membership"
+            type: boolean
+            default: False
+      second_block:
+        type: object
+        title: Purchase type
+        properties:
+          purchase:
+            title: "select purchase"
+            type: object
+            description: >
+              hello this is a xor
+            documentation: >
+              Mardown documentation of a XOR
+            oneOf:
+            - type: object
+              required: [takeaway]
+              properties:
+                takeaway:
+                  type: object
+                  properties:
+                    bag:
+                      title: insulated bag 
+                      type: boolean
+                      default: False
+            - type: object
+              required: [lobby]
+              properties:
+                lobby:
+                  type: object
+                  properties:
+                    table_number:
+                      title: Table number
+                      type: integer
+                      default: 13
+  second_tab:
+    type: object
+    title: Second tab.
+    order: 30
+    properties:
+      first_block:
+        type: object
+        title: Tastes
+        properties:
+          vegetables:
+            title: Edible vegetable (Multiple example)
+            type: array
+            description: >
+              hello this is a MULTIPLE
+            documentation: >
+              Mardown documentation of a MULTIPLE
+            items:
+              type: object
+              required:
+              - name
+              - veggieLike
+              properties:
+                name: 
+                  type: string
+                  description: The name of the vegetable.
+                  default: dummy_vegetable
+                veggieLike:
+                  type: boolean
+                  description: Do I like this vegetable?
+                  default: False

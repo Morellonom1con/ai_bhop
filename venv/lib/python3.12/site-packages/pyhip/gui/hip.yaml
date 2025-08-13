@@ -1,0 +1,791 @@
+# ------------------------------------ #
+# GENERAL
+# ------------------------------------ #
+title: HIP
+type: object
+properties:
+  # ---------------------------------- #
+  # INPUTS
+  # ---------------------------------- #
+  inputs:
+    type: object
+    title: Inputs
+    process: process_inputs.py
+    update_scene_3d: engine_3d_input.py
+    description: "Input files"
+    image: ./pictures/mesh_banderole.png
+    properties:
+      meshpic:
+        type: object
+        title: ''
+        image: ./pictures/mesh_banderole.png
+        properties:
+          dummy:
+            type: string
+            default: 'HIP Graphic User Interface'
+            state: disabled
+            title: ''
+        #properties:
+#          desc:
+#            #default: ""
+#            #title: ''
+#            type: string
+#            ot_type: desc
+      intro:
+        type: object
+        title: ''
+        #image: ./pictures/mesh_banderole.png
+        description: "Hip is a package for manipulating unstructured computational grids and their
+          associated datasets.\n\n© Copyright Jens-Dominik Mueller and CERFACS.\n\n
+          Author :\n
+          - Jens-Dominik Mueller - j.mueller@qmul.ac.uk\n\n
+          Contributor(s) :\n
+          - Gabriel Staffelbach - gabriel.staffelbach@cerfacs.fr\n
+          - Aimad Er-raiy\n"
+        documentation: >
+          [online doc](https://www.cerfacs.fr/avbp7x//RESOURCES/hip_users_guide.pdf)
+        properties:
+          desc:
+            default: "Introduction"
+            type: string
+            ot_type: desc
+      hip:
+        type: object
+        title: HIP
+        description: |
+          If you use a different hip executable from the one that must be compiled within this package, you can set here the path to this
+          executable. If this field is set to 'No' the default hip executable will be used.
+        properties:
+          hip_exec:
+            type: object
+            title: Hip exec
+            oneOf:
+            - required: ['hipexec']
+              type: object
+              properties:
+                hipexec:
+                  type: object
+                  title: "Yes"
+                  properties:
+                    hipexec_path:
+                      title: Path
+                      type: string
+                      default: "./"
+                      ot_type: file
+            - required: ['no_hipexec']
+              type: object
+              properties:
+                no_hipexec:
+                  title: "No"
+                  type: object
+                  properties:
+                    void:
+                      type: string
+                      ot_type: void
+                      default: void
+      input_mode:
+        type: object
+        title: 'Input mode'
+        oneOf:
+        - required: ['read']
+          type: object
+          properties:
+            read:
+              title: 'Import Mesh'
+              type: object
+              properties:
+                input_case:
+                  type: object
+                  title: "Type of input files"
+                  oneOf:
+                  - required: ['hdf5']
+                    type: object
+                    properties:
+                      hdf5:
+                        type: object
+                        title: 'AVBP HDF5'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - h5
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+                  - required: ['hdf5_solution']
+                    type: object
+                    properties:
+                      hdf5_solution:
+                        type: object
+                        title: 'AVBP HDF5 with SOLUTION'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - h5
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+                          avefile:
+                            type: string
+                            title: "Input solution (for adaptation)"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - h5
+                  - required: ['centaur']
+                    type: object
+                    properties:
+                      centaur:
+                        type: object
+                        title: 'CENTAUR'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - hyb
+                            - rst
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+                  - required: ['fluent']
+                    type: object
+                    properties:
+                      fluent:
+                        type: object
+                        title: 'FLUENT'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - msh
+                            - cas
+                            - dat
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+                  - required: ['fluent_solution']
+                    type: object
+                    properties:
+                      fluent_solution:
+                        type: object
+                        title: 'FLUENT with SOLUTION'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - msh
+                            - cas
+                            - dat
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+                          solutfile:
+                            type: string
+                            title: "Input solution"
+                            type: string
+                            default: "./"
+                            ot_type: file
+                  - required: ['gmsh']
+                    type: object
+                    properties:
+                      gmsh:
+                        type: object
+                        title: 'GMSH'
+                        properties:
+                          meshfile:
+                            type: string
+                            title: "Input mesh"
+                            default: "./"
+                            ot_type: file
+                            ot_filter:
+                            - msh
+                          patch_list:
+                            type: array
+                            title: Patch list
+                            state: disabled
+                            items:
+                              type: string
+                              default: dummy_patch
+        - required: ['generate']
+          type: object
+          properties:
+            generate:
+              type: object
+              title: 'Generate Mesh'
+              properties:
+                structure:
+                  type: string
+                  title: 'Mesh structure'
+                  enum: ['quad', 'tri']
+                  enum_titles: ['Quad / Hexa', 'Tri / Tetra']
+                  default: 'quad'
+                dimension:
+                  type: object
+                  title: "Dimensions"
+                  oneOf:
+                  - required: ['2d']
+                    type: object
+                    properties:
+                      2d:
+                        type: object
+                        title: '2D'
+                        properties:
+                          u_bounds:
+                            type: array
+                            title: "X min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          v_bounds:
+                            type: array
+                            title: "Y min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          resolution:
+                            type: array
+                            title: "Resolution [nodes]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: integer
+                              default: 10
+                  - required: ['3d_xyz']
+                    type: object
+                    properties:
+                      3d_xyz:
+                        type: object
+                        title: "3D [X,Y,Z]"
+                        properties:
+                          u_bounds:
+                            type: array
+                            title: "X min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          v_bounds:
+                            type: array
+                            title: "Y min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          w_bounds:
+                            type: array
+                            title: "Z min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          resolution:
+                            type: array
+                            title: "Resolution [nodes]"
+                            minItems: 3
+                            maxItems: 3
+                            items:
+                              type: integer
+                              default: 10
+                  - required: ['3d_xrtheta']
+                    type: object
+                    properties:
+                      3d_xrtheta:
+                        type: object
+                        title: "3D [X,R,ϴ]"
+                        properties:
+                          u_bounds:
+                            type: array
+                            title: "X min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          v_bounds:
+                            type: array
+                            title: "R min/max [m]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          w_bounds:
+                            type: array
+                            title: "ϴ min/max [deg]"
+                            minItems: 2
+                            maxItems: 2
+                            items:
+                              type: number
+                              default: 0.0
+                          resolution:
+                            type: array
+                            title: "Resolution [nodes]"
+                            minItems: 3
+                            maxItems: 3
+                            items:
+                              type: integer
+                              default: 10
+                patch_list:
+                  type: array
+                  title: Patch list
+                  state: disabled
+                  items:
+                    type: string
+                    default: dummy_patch
+      expert_mode:
+        type: object
+        title: 'Expert user parameters'
+        expert: True
+        properties:
+          expert_desc:
+            type: string
+            title: ''
+            default: "The strong checking is recommended for stability, runs faster without.\n"
+            ot_type: desc
+          # fallback:
+          #   type: boolean
+          #   title: 'Fallback'
+          #   default: True
+          checklvl:
+            type: boolean
+            title: 'Strong checking'
+            default: True
+          geofile:
+            default: ''
+            type: string
+            title: "Input geofile"
+            state: disabled
+      meshinfo_block:
+        type: object
+        title: 'Mesh informations'
+        properties:
+          meshinfo:
+            type: string
+            title: ''
+            default: 'No mesh read'
+            state: disabled
+            height: 15
+            ot_type: comment
+  # ---------------------------------- #
+  # PERIODICITIES
+  # ---------------------------------- #
+  periodicity:
+    type: object
+    title: Manage periodicity
+    properties:
+      bnd_patch:
+        type: array
+        title: "Periodic patch pairs"
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              title: "Pair id"
+              default: id
+              state: disabled
+            leader_patch:
+              type: string
+              title: "Leader patch"
+              ot_dyn_choice: patch_list
+            follower_patch:
+              type: string
+              title: "Follower patch"
+              ot_dyn_choice: patch_list
+      perio_pic:
+        type: object
+        title: ''
+        image: ./pictures/Periodic_axi_200.gif
+        properties:
+          desc:
+            default: "Periodic patches convention"
+            type: string
+            ot_type: desc
+  # ---------------------------------- #
+  # TRANSFORMATIONS
+  # ---------------------------------- #
+  transform:
+    type: object
+    title: Transformation
+    description: ""
+    properties:
+      transform_desc:
+        type: object
+        title: ''
+        description: "Transformations will be processed in a specific order (See Step number).\n\
+                      If default values are kept, the operation won't process.\n"
+        properties:
+          desc:
+            default: "Transformations - Duplications"
+            type: string
+            ot_type: desc
+      transformation:
+        type: object
+        title: "Transformations"
+        properties:
+          scale:
+            type: object
+            title: "Step 1 : Scaling"
+            properties:
+              scaling_vector:
+                type: array
+                title: "Scaling factor vector []"
+                minItems: 3
+                maxItems: 3
+                items:
+                  type: number
+                  default: 1.0
+          rotate:
+            type: object
+            title: "Step 2 : Rotation"
+            properties:
+              rotation_angle_x:
+                type: number
+                title: "Rotation angle around x [deg]"
+              rotation_angle_y:
+                type: number
+                title: "Rotation angle around y [deg]"
+              rotation_angle_z:
+                type: number
+                title: "Rotation angle around z [deg]"
+          translate:
+            type: object
+            title: "Step 3 : Translation"
+            properties:
+              translation_vector:
+                type: array
+                title: "Translation vector [m]"
+                minItems: 3
+                maxItems: 3
+                items:
+                  type: number
+                  default:  0.0
+      duplication:
+        type: object
+        title: "Duplication"
+        properties:
+          duplicate:
+            type: object
+            title: "Step 4 : Duplication axi-periodic"
+            properties:
+              nbr_tot:
+                type: integer
+                title: 'Total number of sectors'
+                default: 1
+              nbr_tgt:
+                type: integer
+                title: 'Target number of sectors'
+                default: 1
+  # ---------------------------------- #
+  # INTERPOLATION
+  # ---------------------------------- #
+  interpolate:
+    type: object
+    title: 'Interpolation'
+    process: process_interpolate.py
+    properties:
+      interpolate_desc:
+        type: object
+        title: ''
+        description: "This process allows the interpolatation of \
+                      a solution B from a mesh B [to load here] \
+                      on the current mesh A.\n\
+                      Please check that meshes are correctly located.\n"
+        image: ./pictures/interpolation.png
+        properties:
+          desc:
+            default: "Interpolation process"
+            type: string
+            ot_type: desc
+      interpolation:
+        type: object
+        title: Interpolation source files
+        oneOf:
+        - required: ['interpolation_off']
+          type: object
+          properties:
+            interpolation_off:
+              type: object
+              title: 'No interpolation'
+              properties:
+                desc:
+                  type: string
+                  default: "No interpolation"
+                  ot_type: desc
+        - required: ['interpolation_on']
+          type: object
+          properties:
+            interpolation_on:
+              title: 'Interpolation from HDF5 files'
+              type: object
+              properties:
+                src_mesh:
+                  type: string
+                  title: "Source mesh"
+                  default: "./"
+                  ot_type: file
+                  ot_filter:
+                  - h5
+                src_solution:
+                  type: string
+                  title: "Source solution"
+                  default: "./"
+                  ot_type: file
+                  ot_filter:
+                  - h5
+                patch_list_src:
+                  type: array
+                  title: Patch list
+                  state: disabled
+                  items:
+                    type: string
+                    default: dummy_patch
+                engine_3d_src:
+                  type: object
+                  title: Engine 3D Viewer
+                  expert: True
+                  properties:
+                    geofile:
+                      default: ./my_file.geo
+                      type: string
+                      title: "Interpolation source geofile"
+                      state: disabled
+                meshinfo:
+                  type: string
+                  title: 'Mesh Informations'
+                  default: 'No mesh read'
+                  state: disabled
+                  height: 10
+                  ot_type: comment
+  # ---------------------------------- #
+  # ADAPTATION
+  # ---------------------------------- #
+  adapt:
+    type: object
+    title: Mesh adaptation
+    properties:
+      adapt_desc:
+        type: object
+        title: ''
+        description: "This process allows the adaptation of the \
+                      mesh according to some criteria. The refinement \
+                      coefficient will be homogeneously applied and \
+                      stands as follow :\n\n  \
+                        - If coef < 1  ➞  Mesh refinement\n  \
+                        - If coef > 1  ➞  Mesh coarsing\n  \
+                        - If coef = 1  ➞  Mesh improvement using parameters\n\n\
+                      Additional parameters can be set to tune the adaptation :\n\n  \
+                        - Max graduation coef : limits the resulting gradient of\n    edge \
+                          length between elements after application of the\n    metric.\n    \
+                          Default value is set to 1.4.\n  \
+                        - Min edge size : clips metric to respect minimum edge\n    size.\n    \
+                          Default value is set to 0.\n"
+        image: ./pictures/adaptation_2d.png
+        properties:
+          desc:
+            default: "Adaptation process"
+            type: string
+            ot_type: desc
+      adaptation:
+        type: object
+        title: Mesh adaptation
+        oneOf:
+        - required: ['adaptation_off'] 
+          type: object
+          properties:
+            adaptation_off:
+              type: object
+              title: 'No adaptation'
+              properties:
+                desc:
+                  type: string
+                  default: "No adaptation"
+                  ot_type: desc
+        - required: ['adaptation_on']
+          type: object
+          properties:
+            adaptation_on:
+              type: object
+              title: "Adaptation with IsoFactor"
+              properties:
+                refinement_coeff:
+                  title: Refinement coefficient
+                  type: number
+                  minimum: 1.e-12
+                  default: 0.5
+                refinement_params:
+                  type: object
+                  title: 'Additional parameters'
+                  expert: true
+                  properties:
+                    hgrad:
+                      title: Max graduation coef
+                      type: number
+                      default: 1.4
+                    hmin:
+                      title: Minimum edge size
+                      type: number
+                      default: 0.0
+  # ---------------------------------- #
+  # FINISH
+  # ---------------------------------- #
+  finish:
+    type: object
+    title: Finish
+    process: process_finish.py
+    update_scene_3d: engine_3d_output.py
+    properties:
+      write:
+        title: 'Type of output files'
+        type: object
+        oneOf:
+        - required: ['AVBP HDF5']
+          type: object
+          properties:
+            AVBP HDF5:
+              type: object
+              properties:
+                  casename:
+                    title: 'Output prefix'
+                    type: string
+                    default: 'new'
+                  upload_engine:
+                    title: 'Engine 3D Viewer'
+                    type: object
+                    expert: true
+                    properties:
+                      geofile:
+                        default: ./my_file.geo
+                        type: string
+                        title: "Output geo file"
+                        state: disabled
+        - required: ['CGNS']
+          type: object
+          properties:
+            CGNS:
+              type: object
+              properties:
+                  casename:
+                    title: 'Output prefix'
+                    type: string
+                    default: 'new'
+                  upload_engine:
+                    title: 'Engine 3D Viewer'
+                    type: object
+                    expert: true
+                    properties:
+                      geofile:
+                        default: ./my_file.geo
+                        type: string
+                        title: "Output geo file"
+                        state: disabled
+      commands:
+        type: object
+        title: 'HIP commands'
+        properties:
+          hip_cmd:
+            type: string
+            title: 'HIP Commands'
+            default: 'No command run'
+            state: disabled
+            height: 15
+            ot_type: comment
+      # writing_info:
+      #   type: string
+      #   title: Writer Informations
+      #   default: ''
+      
+
+# - required: ["simple_mesh_generation"]
+        #   type: object
+        #   title: Simple mesh generation
+        #   properties:
+        #     simple_mesh_generation:
+        #       type: object
+        #       properties:
+        #         mesh_type:
+        #           title: Mesh type
+        #           type: string
+        #           default: 2D
+        #           enum: [2D, 3D]
+        #           enum_titles: [2D, 3D]
+        #         mesh_path:
+        #           title: Mesh path
+        #           type: string
+        #           default: "./"
+        #           ot_type: file
+        #         first_point:
+        #           title: First point
+        #           type: array
+        #           minItems: 3
+        #           maxItems: 3
+        #           items:
+        #             type: number
+        #             default:  0.0
+        #         last_point:
+        #           title: Last point
+        #           type: array
+        #           minItems: 3
+        #           maxItems: 3
+        #           items:
+        #             type: number
+        #             default:  0.0
+        #         pnts_nb_in_dir:
+        #           title: Nb of points in dimension
+        #           type: array
+        #           minItems: 3
+        #           maxItems: 3
+        #           items:
+        #             type: integer
+        #             default:  10
+        #         element_type:
+        #           title: Element type
+        #           type: string
+        #           enum: ['Quad','Tri']
+        #         output_mesh:
+        #           title: Output mesh
+        #           type: string
+        #           default: './my_mesh.hdf5'

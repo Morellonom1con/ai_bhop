@@ -1,0 +1,34 @@
+---
+title: "Trivial form..."
+type: object
+properties:
+  first_tab:
+    type: object
+    title: Only tab.
+    process: custom_callback.py
+    description: "tab description"
+    properties:
+      first_block:
+        type: object
+        title: Custom Block
+        description: "block1 description"
+        properties:
+          number_1:
+            title: "Number 1"
+            type: number
+            default: 32.
+            description: "Number block1 description"
+          operand:
+            title: "Operation"
+            type: string
+            default: "+"
+            enum: ["+", "-", "*", "/"]
+          number_2:
+            title: "Number 2"
+            type: number
+            default: 10.
+          result:
+            title: "result"
+            state: disabled
+            type: string
+            default: "-"

@@ -1,0 +1,2 @@
+[console_scripts]
+arnica = arnica.cli:main_cli

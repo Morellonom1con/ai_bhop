@@ -1,0 +1,3 @@
+[console_scripts]
+ihm_hip = pyhip.gui.startup:main
+pyhip = pyhip.cli:main_cli

@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: nob
+Version: 0.8.2
+Summary: Nested OBject manipulations
+Home-page: https://gitlab.com/cerfacs/nob
+Author-email: lapeyre@cerfacs.fr
+License: UNKNOWN
+Keywords: JSON,YAML,Nested Object
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: myst-parser ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: numpy ; extra == 'test'
+
+[![Documentation Status](https://readthedocs.org/projects/nob/badge/?version=latest)](https://nob.readthedocs.io/en/latest/?badge=latest)
+
+# nob: the Nested OBject manipulator
+
+Deep nested data is sometimes difficult to map with objects in an Object
+Relational Mapping (ORM) appraoch. Suppose *e.g.* you're working with this file:
+
+```yaml
+root:
+  System:
+    Library:
+      Frameworks:
+        Python.framework:
+          Versions:
+            2.7:
+              bin: python2.7
+```
+
+If you wanted the last value here using pure Python, you would have to write something like:
+
+```python
+pure_python['root']['System']['Library']['Frameworks']['Python.framework']['Versions']['2.7']['bin']
+```
+
+Gosh that's bad, it doesn't even fit in the screen!  This is where nob shines:
+it offers a simple set of tools to explore and edit any nested data (Python
+native dicts and lists). With nob, this becomes:
+
+```python
+nob_object['bin'][:]
+```
+
+Pretty neat, no? For more, checkout nob's
+[documentation](https://nob.readthedocs.io/).
+
+# Installation
+
+    pip install nob
+
+Enough said :)
+

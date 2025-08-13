@@ -1,0 +1,141 @@
+Metadata-Version: 2.1
+Name: h5cross
+Version: 0.2.7
+Summary: Helper tools to handle H5 files
+Home-page: https://gitlab.com/cerfacs/h5cross
+Author: Jimmy-John Hoste, CoopTeam-CERFACS
+Author-email: coop@cerfacs.fr
+Project-URL: Homepage, https://gitlab.com/cerfacs/h5cross
+Project-URL: Documentation, https://h5cross.readthedocs.io/en/latest/
+Project-URL: Bug Tracker, https://gitlab.com/cerfacs/h5cross/-/issues
+Keywords: hdf5,statistics,file conversion,visualization,scientific computing
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: pyyaml
+Requires-Dist: h5py
+Requires-Dist: numpy
+Requires-Dist: pytest
+Requires-Dist: prettytable
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: pytest-coverage ; extra == 'tests'
+Requires-Dist: prettytable ; extra == 'tests'
+Requires-Dist: vtk ; extra == 'tests'
+Requires-Dist: pymech ; extra == 'tests'
+Requires-Dist: matplotlib ; extra == 'tests'
+Requires-Dist: seaborn ; extra == 'tests'
+Requires-Dist: scipy ; extra == 'tests'
+Requires-Dist: nobvisual >=0.3 ; extra == 'tests'
+Requires-Dist: nob ; extra == 'tests'
+Provides-Extra: vis
+Requires-Dist: nob ; extra == 'vis'
+Requires-Dist: scipy ; extra == 'vis'
+Requires-Dist: matplotlib ; extra == 'vis'
+
+# H5CROSS
+
+This package provides basic utilities allowing the comparison of hdf5 type files.
+This includes the computation of standard statistics on data arrays such as the mean, 
+min, max, median and standard deviation. 
+An interactive mode is enabled through the use of nobvisual (https://pypi.org/project/nobvisual/). 
+Scatter plot comparative capability is enabled through seaborn and matplotlib. 
+
+## Installation
+
+Installation using Pypi:
+
+```bash
+> pip install h5cross
+```
+
+## Usage
+
+Use the CLI for a basic terminal usage.
+
+```bash
+   ---------------    H5CROSS  --------------------
+
+  You are now using the Command line interface of h5cross a Python3 helper
+  to explore and compare hdf5 files, created at CERFACS
+  (https://cerfacs.fr).
+
+  This is a python package currently installed in your python environement.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  convert   Conversion to hdf5 of certain file formats.
+  diff      Compare the content of two hdf5 files and view interactively...
+  dump      Write the content of an hdf5 file into a YAML file.
+  scatter   Scatter plot comparison of two hdf5 files.
+  stats     Compute statistics of arrays from hdf5 file.
+  tree      Print the content of an hdf5 file in terminal.
+  view      Show the content of an hdf5 file interactively with nobvisual.
+
+```
+
+## Possibilities
+
+### Console file structure visualization
+
+The command `>h5cross tree `  prints the structure of an HDF5 file in the console. 
+
+![tree_output](https://cerfacs.fr/coop/images/h5cross/tree.png)
+### Statistical information of file
+
+The command `>h5cross stats`  computes the mean, min, max, median and standard deviation of every data set for a given HDF5 file.  It is then output into the console (can be optionally deactivated). The result can be optionally saved in a YAML format (.yml). A pretty table output is set to default and can be optionally be deactivated in which case a tree output is given. In a pretty table, the full nested path is shown but can be deactivated. 
+
+![stats_pretty_output](https://cerfacs.fr/coop/images/h5cross/stats_pretty_full.png)
+
+![stats_pretty_output](https://cerfacs.fr/coop/images/h5cross/stats_pretty.png)
+
+![stats_tree_output](https://cerfacs.fr/coop/images/h5cross/stats.png)
+
+### Save file structure
+
+The command `>h5cross dump`  outputs the structure of an HDF5 file in a YAML format (.yml). 
+
+
+
+### View file structure
+
+The command `>h5cross view`  allows an interactive view of the structure of an HDF5 file. It relies on the [nobvisual]( https://pypi.org/project/nobvisual/ ) package designed for the visualisation of nested objects.  A temporary .yml file is generated to allow the interactive use.  
+
+![view](https://cerfacs.fr/coop/images/h5cross/view.png)
+
+### Compare file structures
+
+The command `>h5cross diff` compares the structure of two HDF5 files. Similarily to  `>h5cross view` it relies on the [nobvisual]( https://pypi.org/project/nobvisual/ ) package.  It is optionally possible to add the statistical information of both files in this representation. 
+
+![diff](https://cerfacs.fr/coop/images/h5cross/diff.png)
+
+### Compare field data 
+
+The command `>h5cross scatter` allows the scatter plot comparison of selected data fields from two HDF5 files. If the data array lengths of each file differ an histogram representation will be given instead. 
+A minimum requirement is the matplotlib package. By default it uses the seaborn package if available but this setting can be optionally deactivated. The density colormap requires the scipy package, if not available a single color will be used.
+
+![seaborn](https://cerfacs.fr/coop/images/h5cross/seaborn_same_T.png)
+
+![plt](https://cerfacs.fr/coop/images/h5cross/plt_same_T.png)
+
+![hist](https://cerfacs.fr/coop/images/h5cross/hist.png)
+
+
+### Converting file types to HDF5 file
+
+It is possible to convert certain file formats to HDF5 with `>h5cross convert` .
+Currently supported: nek5000, pvtu, vtu, vtk.
+
+## Acknowledgement
+
+h5cross is a service created in the [EXCELLERAT Center Of Excellence](https://www.excellerat.eu/wp/) and is continued as part of the [COEC Center Of Excellence](https://coec-project.eu/). Both projects are funded by the European community.
+![logo](https://www.excellerat.eu/wp-content/uploads/2020/04/excellerat_logo.png)
+![logo](https://www.hpccoe.eu/wp-content/uploads/2020/10/cnmlcLiO_400x400-e1604915314500-300x187.jpg)

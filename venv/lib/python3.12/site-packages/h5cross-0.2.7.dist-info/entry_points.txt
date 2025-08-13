@@ -1,0 +1,2 @@
+[console_scripts]
+h5cross = h5cross.cli:main_cli

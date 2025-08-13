@@ -1,85 +1,131 @@
+import math
 import pygame
-from sys import exit
 
-fmove=0
-smove=0
+MOUSE_SENSITIVITY = 0.002
+MAX_SPEED = 400
+ACCELERATE = 10
+AIR_ACCELERATE = 1
+FRICTION = 6
+GRAVITY = 800  
+AIR_SPEED_CAP = 30
 
-maxspeed=10
-onground=1
+class Player:
+    def __init__(self, pos):
+        self.pos = pygame.math.Vector2(pos)
+        self.velocity = pygame.math.Vector2(0, 0)
+        self.yaw = 0.0
+        self.player_surface=pygame.image.load('player.png').convert_alpha()
+        self.on_ground = True
 
-forward=[1,0,0]
-right=[0,-1,0]
+    def handle_input(self):
+        mx, my = pygame.mouse.get_rel()
+        self.yaw += mx * MOUSE_SENSITIVITY
 
-wishvel=[0,0]
-wishdir=[0,0]
+        fmove = 0
+        smove = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:
+            fmove += 1
+        if keys[pygame.K_s]:
+            fmove -= 1
+        if keys[pygame.K_d]:
+            smove += 1
+        if keys[pygame.K_a]:
+            smove -= 1
 
-def vec_scale(in_vec,scale,out_vec):
-    out_vec[0]=in_vec[0]*scale
-    out_vec[1]=in_vec[1]*scale
+        forward = pygame.math.Vector2(math.cos(self.yaw), math.sin(self.yaw))
+        right   = pygame.math.Vector2(-math.sin(self.yaw), math.cos(self.yaw))
+        
+        wishvel = forward * fmove + right * smove
+        if wishvel.length_squared() > 0:
+            wishspeed = wishvel.length() * MAX_SPEED
+            wishdir = wishvel.normalize()
+        else:
+            wishspeed = 0
+            wishdir = pygame.math.Vector2(0, 0)
 
-def vec_normalize(v):
-    ilength=0
-    length=v[0]*v[0]+v[1]*v[1]
-    length=length**0.5
-    if length:
-        ilength=1/length
-        v[0]*=ilength
-        v[1]*=ilength
-    return length
+        return wishdir, wishspeed
 
-def catagorizePosition(player_x,player_y,player_z,terrain):
-    if player_z==terrain[player_x][player_y]:
-        onground=1
-    else:
-        onground=-1
+    def pm_friction(self, dt):
+        speed = self.velocity.length()
+        if speed < 0.1:
+            return
+        drop = speed * FRICTION * dt
+        new_speed = max(speed - drop, 0)
+        self.velocity *= new_speed / speed
 
-def air_move():
-    for i in range(2):
-        wishvel[i]=forward[i]*fmove+right[i]*smove
-    wishdir=wishvel
-    wishspeed=vec_normalize(wishdir)
+    def pm_accelerate(self, wishdir, wishspeed, accel, dt):
+        currentspeed = self.velocity.dot(wishdir)
+        addspeed = wishspeed - currentspeed
+        if addspeed <= 0:
+            return
+        accelspeed = accel * wishspeed * dt
+        if accelspeed > addspeed:
+            accelspeed = addspeed
+        self.velocity += wishdir * accelspeed
 
-    if wishspeed>maxspeed:
-        vec_scale(wishvel,maxspeed/wishspeed,wishvel)
-        wishspeed=maxspeed
+    def pm_airaccelerate(self, wishdir, wishspeed, accel, dt):
+        if wishspeed > AIR_SPEED_CAP:
+            wishspeed = AIR_SPEED_CAP
+        currentspeed = self.velocity.dot(wishdir)
+        addspeed = wishspeed - currentspeed
+        if addspeed <= 0:
+            return
+        accelspeed = accel * wishspeed * dt
+        if accelspeed > addspeed:
+            accelspeed = addspeed
+        self.velocity += wishdir * accelspeed
 
-    if onground!=-1:
-        pass
-    pass
+    def update(self, dt):
+        wishdir, wishspeed = self.handle_input()
 
-def accelerate():
-    pass
+        if self.on_ground:
+            self.pm_friction(dt)
+            self.pm_accelerate(wishdir, wishspeed, ACCELERATE, dt)
+        else:
+            self.pm_airaccelerate(wishdir, wishspeed, AIR_ACCELERATE, dt)
+            self.velocity.y += GRAVITY * dt  # simple gravity
 
-def playermove():
-    pass
-
+        self.pos += self.velocity * dt
 
 pygame.init()
-screen=pygame.display.set_mode((1000,1000))
-pygame.display.set_caption("bhop simulation")
-clock=pygame.time.Clock()
-player_x=500
-player_y=500
-player_surface=pygame.image.load('player.png').convert_alpha()
-player_rect=player_surface.get_rect(center=(player_x,player_y))
+font = pygame.font.SysFont(name= "Ubuntu Sans Mono",size= 24)
+screen = pygame.display.set_mode((1000, 1000))
+clock = pygame.time.Clock()
+pygame.mouse.set_visible(False)
+pygame.event.set_grab(True)
 bg_surface=pygame.Surface((1000,1000))
+player = Player((400, 300))
 
-while True:
+running = True
+while running:
+    dt = clock.tick(60) / 1000.0
     for event in pygame.event.get():
-        if event.type==pygame.QUIT:
-            pygame.quit()
-            exit()
-    keys=pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_y-=1
-    if keys[pygame.K_s]:
-        player_y+=1
-    if keys[pygame.K_a]:
-        player_x-=1
-    if keys[pygame.K_d]:
-        player_x+=1
-    player_rect=player_surface.get_rect(center=(player_x,player_y))
-    screen.blit(bg_surface,(0,0))
-    screen.blit(player_surface,player_rect)
+        if event.type == pygame.QUIT:
+            running = False
+
+    player.update(dt)
+
+    screen.fill((0, 0, 0))
+    angle_degrees = -math.degrees(player.yaw) - 90 
+    rotated_surface = pygame.transform.rotate(player.player_surface, angle_degrees)
+    rotated_rect = rotated_surface.get_rect(center=player.pos)
+
+    screen.blit(bg_surface, (0, 0))
+    screen.blit(rotated_surface, rotated_rect)
+    info_lines = [
+            f"pos: ({player.pos.x:.2f}, {player.pos.y:.2f})",
+            f"vel: ({player.velocity.x:.2f}, {player.velocity.y:.2f})",
+            f"grounded: {player.on_ground}",
+            f"alpha: {player.player_surface.get_alpha()}"
+        ]
+
+    y_offset = 10
+    for line in info_lines:
+        text_surface = font.render(line, True, (255, 255, 255))
+        text_rect = text_surface.get_rect(topright=(990, y_offset))
+        screen.blit(text_surface, text_rect)
+        y_offset += 20
     pygame.display.update()
-    clock.tick(60)
+
+pygame.quit()

@@ -1,0 +1,6 @@
+first_tab:
+  first_block:
+    number_1: 32.0
+    number_2: 10.0
+    operand: +
+    result: 42.0

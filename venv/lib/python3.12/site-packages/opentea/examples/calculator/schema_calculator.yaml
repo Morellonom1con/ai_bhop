@@ -1,0 +1,621 @@
+properties:
+  ## TAB ONE
+  controle_existif_require:
+    process: callback_tab1.py
+    title: Controle If/Req.
+    type: object
+    description: this is the first tab...
+    properties:
+      controle:   
+        title: Control
+        type: object
+        description: >
+             test boolean 
+        properties:
+          controle_ei:
+            default: false
+            title: on/off
+            type: boolean
+
+      expert_model:
+        title:  expert model
+        type: object
+        expert: True
+        description: >
+          this model only shows on demand
+        properties:
+          a1:
+            default: 1
+            title: a1
+            type: number
+          a2:
+            default: 1
+            title: a2
+            type: number
+          a3:
+            default: 1
+            title: a3
+            type: number
+
+        
+      source_req_patch:
+        title: Control require patches
+        type: object
+        description: >
+          Test the dynamic creation of patches,  
+          and update of choice options. 
+        properties:
+          hidden_value:
+            default: 4
+            title: Hidden data
+            type: string
+            ot_type: hidden
+          npatches:
+            default: 4
+            exclusiveMaximum: true
+            exclusiveMinimum: true
+            maximum: 200
+            minimum: 0
+            title: Nb patches
+            type: integer
+          list_patches:
+            type: array
+            title : Patch list
+            state : disabled
+            items : 
+              type : string
+              default: single_patch
+            # default : [patch_in, patch_wall1, patch_wall2, patch_out]
+          list_acq_lines:
+            type: array
+            title : Acquisition lines list
+            state : disabled
+            items : 
+              type : string
+              default: no_acquisition_yet
+          choice_patches:
+            title:  patch choice
+            type: string
+            ot_dyn_choice: list_patches
+        
+    
+  ## SECOND TAB
+  data3d:
+    title: Visu2D/3D
+    script: process_data3d.py
+    type: object
+    properties:
+      geo_file:
+        default: ""
+        type: string
+        title: Chamber (stator) .geo
+        ot_type: file
+        ot_filter: [geo]
+      params2d:
+        title: 2d figure parameters
+        type: object
+        description: Control a simple sine wave on a 1sec duration
+        properties:
+          frequency:
+            default: 20.
+            maximum: 100.
+            minimum: 1.
+            title: Frequency [Hz]
+            type: number
+          sampling:
+            default: 100
+            maximum: 1000
+            minimum: 5
+            title: Sampling [Hz]
+            type: number
+      coque1:
+        title: cube
+        type: object
+        description: Cube to be rendered
+        properties:
+          ngrid:
+            default: 4
+            maximum: 10
+            minimum: 2
+            title: grid samples
+            type: integer
+          point0:
+            type: array
+            minItems: 3
+            maxItems: 3
+            items:
+              type: number
+              default:  0.0
+          point1:
+            type: array
+            minItems: 3
+            maxItems: 3
+            items:
+              type: number
+              default:  0.02
+      coque2:
+        title: Frutum
+        type: object
+        description: Frustum to be rendered
+        properties:
+          ngrid:
+            default: 4
+            maximum: 10
+            minimum: 2
+            title: grid samples
+            type: integer
+          point0:
+            type: array
+            minItems: 3
+            maxItems: 3
+            items:
+              type: number
+              default:  0.0
+          point1:
+            type: array
+            minItems: 3
+            maxItems: 3
+            items:
+              type: number
+              default:  -0.2
+          radius0:
+            default: 0.01
+            maximum: 1.0
+            minimum: 0.01
+            title: Radius at pt 0
+            type: number
+          radius1:
+            default: 0.07
+            maximum: 1.0
+            minimum: 0.01
+            title: Radius at pt 0
+            type: number
+      
+  ## THird tab process entries
+  entries:
+    script: process_entries.py
+    title: Entries
+    type: object
+    properties:
+
+      nestedblock1:
+        description: >
+          Nested block trial
+        type: object
+        title: Block 1
+        properties:
+          nestedblock2:
+            type: object
+            title: Block 2
+            properties:
+              nestedblock3:
+                type: object
+                title: Block 3
+                properties:
+                  nestedblock4:
+                    type: object
+                    title: Block 3
+                    description: Lorem ipsum
+                    properties: {}
+      choix:
+        description: >
+          Two choices, one below the limit (radiobutton)
+          the other beyond(combobox)
+        title: Choices
+        type: object
+        properties:
+          choix1:
+            default: item1
+            enum:
+            - item1
+            - item2
+            - item3
+            enum_titles:
+            - item1
+            - item2
+            - item3
+            title: 3 items
+            description: description of choice 1
+            type: string
+          choix2:
+            default: item1
+            enum:
+            - item1
+            - item2
+            - item3
+            - item4
+            - item5
+            - item6
+            enum_titles:
+            - Title 1
+            - Title 2
+            - Title 3
+            - Title 4
+            - Title 5
+            - Title 6
+            title: 6 items
+            type: string
+            description: description of choice 2
+            
+        
+      comment:
+        title: Comments
+        type: object
+        description: >
+          Comments. The second one is disabled. 
+        properties:
+          mod_comment:
+            title: bossa nova
+            type: string
+            default: Lorem ipsum sic hamet
+            height: 5
+            ot_type: comment
+            description: description of mod_comment
+            
+          readonly_comment:
+            title: fdo
+            type: string
+            default: Lorem ipsum sic hamet
+            state: disabled
+            ot_type: comment
+            description: description of readonly_comment
+            
+      ent:
+        title: Simple entries
+        type: object
+        description: >
+             All of these are simple entries
+        properties:
+          ent0:
+            default: false
+            title: Boolean
+            type: boolean
+            description: description of Boolean
+            
+          ent1:
+            default: 1.3
+            exclusiveMaximum: true
+            exclusiveMinimum: true
+            maximum: 2
+            minimum: 1
+            title: Number
+            type: number
+            description: description of entry 1, minmax Exclu.
+            documentation: documentation of entry 1, minmax Exclu.
+
+          ent2:
+            default: 0
+            maximum: 1
+            minimum: -1
+            title: Integer
+            type: integer
+            description: description of entry 2, minmax Inclus.
+            documentation: documentation of entry 2, minmax Inclus.
+
+          ents0:
+            default: dummy
+            title: String
+            type: string
+            #state: disabled
+            description: description of string
+            documentation: documentation of string 
+
+          ents1:
+            default: dummy
+            title: String (disabled state)
+            type: string
+            state: disabled
+          file4:
+            ot_type: file
+            ot_filter:
+            - h5
+            title: File
+            type: string
+            default: any.h5
+          file5:
+            ot_type: file
+            ot_filter: directory
+            title: Folder
+            type: string
+            default: anyfolder
+      entlist:
+        title: List entries
+        type: object
+        description: >
+            List entries
+        properties:
+          entl1:
+            title: String - dynamic
+            type: array
+            items:
+              type: string
+              default: Catch a tiger
+          entl2:
+            title: Integer - X4
+            type: array
+            minItems: 4
+            maxItems: 4
+            items:
+              type: integer 
+              default: 42
+          entl3:
+            title: Number - 3X 
+            type: array
+            minItems: 3
+            maxItems: 3
+            items:
+              type: number 
+              default: 666.
+
+  multiple:
+    order: '40'
+    properties:
+      mul_cont:
+        items:
+          properties:
+            name: 
+              title: patch name
+              default: stator_dummy
+              type: string
+              state: disabled
+            bcliq:
+              type: object
+              oneOf:
+              - type: object
+                required: [inlet_aaa]
+                properties:
+                  inlet_aaa:
+                    title: inlet_A
+                    type: object
+                    properties:
+                      velocity:
+                        title: velocity
+                        type: array
+                        default: [ 0., 0., 1.]
+                        minItems: 2
+                        maxItems: 3
+                        items:
+                          type: number
+                          
+                    
+              - type: object
+                required: [inlet_bbb]
+                properties:
+                  inlet_bbb:
+                    title: inlet_B
+                    type: object
+                    properties:
+                      velocity:
+                        title: velocity
+                        type: array
+                        minItems: 2
+                        maxItems: 3
+                        items:
+                          type: number
+                          default: 0.0
+                    
+              - type: object
+                required: [outlet]
+                properties:
+                  outlet:
+                    properties:
+                      pressure:
+                        default: 101325
+                        exclusiveMinimum: true
+                        minimum: 0
+                        title: pressure
+                        type: number
+                    title: outlet
+                    type: object
+              - type: object
+                required: [wall]
+                properties:
+                  wall:
+                    properties: {}
+                    title: wall
+                    type: object
+                required:
+                - wall
+              title: B.C. liquid
+            bnd_gas:
+              type: object
+              oneOf:
+              - type: object
+                required: [inlet]
+                properties:
+                  inlet:
+                    properties:
+                      pressure:
+                        default: 101325
+                        title: pressure
+                        type: number
+                      tempoerature:
+                        default: 300
+                        title: tempoerature
+                        type: number
+                      velocity:
+                        title: velocity
+                        type: array
+                        items:
+                          type: number
+                          default: 0.0
+                    title: inlet
+                    type: object
+              - type: object
+                required: [outlet]
+                properties:
+                  outlet:
+                    properties:
+                      pressure:
+                        default: 101325
+                        exclusiveMinimum: true
+                        minimum: 0
+                        title: pressure
+                        type: number
+                    title: outlet
+                    type: object
+              - type: object
+                required: [wall]
+                properties:
+                  wall:
+                    properties: {}
+                    title: wall
+                    type: object
+                required:
+                - wall
+            param-nb:
+              default: 42
+              minimum: 0
+              title: param-order
+              type: integer
+          type: object
+          title: Boundary cond.
+        name: mul_cont
+        ot_require: list_patches
+        #ot_require: entl1
+        type: array
+    script: process_multiple.py
+    title: Multiple
+    type: object
+  multiple2:
+    order: '41'
+    descritpion: multiple sans depandances
+    properties:
+      mul_cont2:
+        items:
+          properties:
+            name:
+              title: item name
+              type: string
+              state: disabled
+              default: unnamed
+            param-order:
+              default: 1
+              minimum: 0
+              title: param-order
+              type: integer
+            param_onoff:
+              default: false
+              ot_type: onoff
+              title: param_onoff
+              type: boolean
+            
+          type: object
+          title: Boundary cond.
+        type: array
+    title: Multiple Independent
+    type: object
+  multiple_acq:
+    order: '42'
+    description: Aquisition multiple
+    properties:
+      mul_cont3:
+        items:
+          properties:
+            name:
+              title: item name
+              type: string
+              state: disabled
+              default: unnamed
+            param-order:
+              default: 1
+              minimum: 0
+              title: param-order
+              type: integer
+            param_onoff:
+              default: false
+              ot_type: onoff
+              title: param_onoff
+              type: boolean
+          type: object
+          title: Ascquisition line
+        type: array
+        ot_require: list_acq_lines
+    title: Multiple on acquisition 2D
+    type: object
+  exclusive_or:
+    order: '30'
+    description:
+      exclusive or.
+    properties:
+      ouex_mod:
+        type: object
+        oneOf:
+        - type: object
+          required: ["model_0"]
+          properties:
+            model_0:
+              properties: {}
+              title: Model 0
+              type: object
+        - type: object
+          required: ["model_a_1"]
+          properties:
+            model_a_1:
+              properties:
+                toto1:
+                  default: 300
+                  exclusiveMinimum: true
+                  minimum: 0
+                  title: Entry
+                  type: number
+              title: Model A 1 (param)
+              type: object
+        - type: object
+          required: ["model_a_3"]
+          properties:
+            model_a_3:
+              existif:
+                node: controle_ei
+                operator: "=="
+                value: true
+              properties:
+                choice5:
+                  default: b
+                  enum:
+                  - a
+                  - b
+                  - c
+                  enum_titles:
+                  - a
+                  - b
+                  - c
+                  title: 'Choice '
+                  type: string
+              title: Model A 3 (choice)
+              type: object
+        - type: object
+          required: ["model_b_1"]
+          properties:
+            model_b_1:
+              properties:
+                p1:
+                  default: 0
+                  title: 'Param normal '
+                  type: integer
+                p2:
+                  default: 0
+                  title: 'Param si controle_ei ==1 '
+                  type: integer
+              title: Model B 1 (existif)
+              type: object
+
+        - type: object
+          required: ["model_b_2"]
+          properties:
+            model_b_2:
+              properties:
+                toto3:
+                  title: Entry
+                  type: array
+                  items:
+                    type: number
+                    default: 43.0
+              title: 'Model B 2 (list) '
+              type: object
+        title: Ou exclusif
+    script: process_ouexclusif.py
+    title: Ou exclusif
+    type: object
+title: Example complex
+type: object

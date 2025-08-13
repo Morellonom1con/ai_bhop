@@ -1,0 +1,76 @@
+---
+"$schema": http://json-schema.org/schema#
+title: Layout scheme
+description: The structure that a layout has to respect in order to be used to plot
+  data with Showy
+type: object
+properties:
+  title:
+    description: The title of the layout
+    type: string
+  graphs:
+    description: The graphs of the layout
+    type: array
+    items:
+      description: A graph
+      type: object
+      properties:
+        curves:
+          description: The curves of the graph
+          type: array
+          items:
+            description: A curve
+            type: object
+            properties:
+              var:
+                description: The name of the data for the Y-axis
+                type: string
+              legend:
+                description: The legend of the curve
+                type: string
+            required:
+            - var
+            additionalProperties: false
+          minItems: 1
+        x_var:
+          description: The name of the data for the X-axis
+          type: string
+        y_label:
+          description: The label of the Y-axis
+          type: string
+        x_label:
+          description: The label of the X-axis
+          type: string
+        title:
+          description: The title of the graph
+          type: string
+      required:
+      - curves
+      - x_var
+      additionalProperties: false
+    minItems: 1
+  figure_dpi:
+    description: The number of dots per inch of the figure
+    type: number
+    exclusiveMinimum: 0
+  figure_size:
+    description: The size of the figure in inches
+    type: array
+    items:
+      description: A length in inches
+      type: number
+      exclusiveMinimum: 0
+    minItems: 2
+    maxItems: 2
+  figure_structure:
+    description: The numbers of rows and columns of graphs
+    type: array
+    items:
+      description: An integer for a number of rows or columns
+      type: integer
+      minimum: 1
+    minItems: 2
+    maxItems: 2
+required:
+- graphs
+additionalProperties: false

@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: kokiy
+Version: 0.5.0
+Summary: Utilities to work on 2D and 3D structured grids
+Home-page: https://gitlab.com/cerfacs/kokiy
+Author: CoopTeam-CERFACS
+Author-email: coop@cerfacs.com
+License: UNKNOWN
+Project-URL: Homepage, https://gitlab.com/cerfacs/kokiy
+Project-URL: Documentation, https://kokiy.readthedocs.io/en/latest/
+Project-URL: Bug Tracker, https://gitlab.com/cerfacs/kokiy/-/issues
+Keywords: shell,mesh,scientific computing,finite elements,cfd
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: arnica
+Requires-Dist: meshio
+Requires-Dist: yamio
+Requires-Dist: cloud2cloud
+Provides-Extra: docs
+Requires-Dist: myst-parser ; extra == 'docs'
+Requires-Dist: nbsphinx (==0.8.6) ; extra == 'docs'
+Requires-Dist: pydata-sphinx-theme ; extra == 'docs'
+Requires-Dist: sphinx-copybutton ; extra == 'docs'
+Requires-Dist: jupyter-sphinx ; extra == 'docs'
+Requires-Dist: pyvista ; extra == 'docs'
+Requires-Dist: ipygany ; extra == 'docs'
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: pytest-lazy-fixture ; extra == 'tests'
+Requires-Dist: h5py ; extra == 'tests'
+Requires-Dist: pyvista ; extra == 'tests'
+
+``kokiy`` contains utilities to work on 2D and 3D structured grids. Grids can be, among others, cartesian planes (``CartShell``) or axi-cylindrical extrusions from x-r splines (``AxiShell``). ``ThickShell`` are 3D shells built by extruding any of the available 2d objects. Check out the API reference for an extensive list of all available geometries.
+
+
+Main features include:
+
+* create 2D and 3D structured grids (including axi-cylindrical objects)
+* interpolate a solution
+* operate (e.g. average) a solution over a direction
+* dump shells for fields visualization in `ParaView <https://www.paraview.org/>`_
+* export mesh in any format available in `yamio <https://pypi.org/project/yamio/>`_ (e.g. ``hip``-friendly ``.hdf5``, ``xdfm``, ``dolfin-xml``)
+* export ``.geo`` files for visualization with `tiny-3d-engine <https://pypi.org/project/tiny-3d-engine/>`_
+
+
+
+Installation
+------------
+
+Install with
+
+
+.. code-block:: bash
+
+    pip install kokiy
+
+
