@@ -1,13 +1,78 @@
 import math
 import pygame
+import torch
+import random
+import numpy as np
+from collections import deque
+from model import Linear_QNet, QTrainer
 
-MOUSE_SENSITIVITY = 0.002
+MOUSE_SENSITIVITY = 0.2
 MAX_SPEED = 200
 ACCELERATE = 7
 AIR_ACCELERATE = 1
 FRICTION = 10
-GRAVITY = 900  
+GRAVITY = 900
 AIR_SPEED_CAP = 30
+MAX_MEMORY = 100_000
+BATCH_SIZE = 1000
+LR = 0.001
+
+class Agent:
+
+    def __init__(self):
+        self.n_games = 0
+        self.epsilon = 0 # randomness
+        self.gamma = 0.9 # discount rate
+        self.memory = deque(maxlen=MAX_MEMORY) # popleft()
+        self.model = Linear_QNet(7, 256, 6)
+        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+
+
+    def get_state(self, player, game):
+        yaw = ((player.yaw + math.pi) % (2*math.pi)) - math.pi
+        yaw /= math.pi
+        pos_x, pos_y = player.pos.x/1000.0, player.pos.y/1000.0
+        vel_x, vel_y = player.velocity.x/MAX_SPEED, player.velocity.y/MAX_SPEED
+        z_pos = player.z_pos/40.0   # pick your max jump height
+        distance = player.pos.distance_to(game.end_pos) / math.hypot(1000,1000)
+        return np.array([yaw, pos_x, pos_y, vel_x, vel_y, z_pos, distance], dtype=float)
+
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done)) # popleft if MAX_MEMORY is reached
+
+    def train_long_memory(self):
+        if len(self.memory) > BATCH_SIZE:
+            mini_sample = random.sample(self.memory, BATCH_SIZE) # list of tuples
+        else:
+            mini_sample = self.memory
+
+        states, actions, rewards, next_states, dones = zip(*mini_sample)
+        self.trainer.train_step(states, actions, rewards, next_states, dones)
+        #for state, action, reward, nexrt_state, done in mini_sample:
+        #    self.trainer.train_step(state, action, reward, next_state, done)
+
+    def train_short_memory(self, state, action, reward, next_state, done):
+        self.trainer.train_step(state, action, reward, next_state, done)
+
+    def get_action(self, state):
+        # random moves: exploration
+        self.epsilon = max(0, 80 - self.n_games)
+
+        state0 = torch.tensor(state, dtype=torch.float)
+        prediction = self.model(state0)
+
+        if random.randint(0, 200) < self.epsilon:
+            # explore randomly
+            mx = random.uniform(-1, 1)   # random mouse movement
+            buttons = [random.randint(0,1) for _ in range(5)]  # random booleans
+            action = [mx] + buttons
+        else:
+            # exploit: use model prediction
+            mx = prediction[0].item()  # first output = mouse delta
+            buttons = [1 if p > 0 else 0 for p in prediction[1:].tolist()]  
+            action = [mx] + buttons
+
+        return action
 
 class Player:
     def __init__(self, pos):
@@ -25,23 +90,22 @@ class Player:
         alpha = normalized_z * 255
         self.player_surface.set_alpha(min(int(alpha), 255))
 
-    def handle_input(self):
-        mx, my = pygame.mouse.get_rel()
+    def handle_input(self,mx,up_press,down_press,left_press,right_press,jump):
         self.yaw += mx * MOUSE_SENSITIVITY
 
         jump_pressed = False
         fmove = 0
         smove = 0
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
+
+        if up_press:
             fmove += 1
-        if keys[pygame.K_DOWN]:
+        if down_press:
             fmove -= 1
-        if keys[pygame.K_RIGHT]:
+        if right_press:
             smove += 1
-        if keys[pygame.K_LEFT]:
+        if left_press:
             smove -= 1
-        if keys[pygame.K_RSHIFT]:
+        if jump:
             jump_pressed = True
 
         forward = pygame.math.Vector2(math.cos(self.yaw), math.sin(self.yaw))
@@ -102,8 +166,9 @@ class Player:
             self.z_velocity = 0
             self.on_ground = True
 
-    def update(self, dt):
-        wishdir, wishspeed, jump_pressed = self.handle_input()
+    def update(self, dt,action):
+        mx, up, down, left, right, jump = action
+        wishdir, wishspeed, jump_pressed = self.handle_input(mx,up,down,left,right,jump)
         if self.z_pos == 0:
             self.on_ground = True
         else:
@@ -133,12 +198,11 @@ class Game:
 
     def check_finish(self, player, current_time_ms):
         if player.pos.distance_to(self.end_pos) <= 100:  # 100px radius check
-            player.pos = pygame.math.Vector2(500,50) #self.start_pos wasn't working
+            player.pos = self.start_pos.copy() #self.start_pos wasn't working
             self.last_finish = current_time_ms
             return True
         return False
 
-# --- Setup ---
 pygame.init()
 font = pygame.font.SysFont("Ubuntu Sans Mono", 24)
 screen = pygame.display.set_mode((1000, 1000))
@@ -150,7 +214,6 @@ bg_surface = pygame.Surface((1000, 1000))
 game = Game()
 player = Player(game.start_pos)
 
-# Create start/end transparent circles
 start = pygame.Surface((100, 100))
 start=pygame.image.load("start.png").convert_alpha()
 
@@ -160,8 +223,7 @@ end=pygame.image.load("end.png").convert_alpha()
 
 total_time = 0
 running = True
-
-# --- Game Loop ---
+agent=Agent()
 while running:
     dt_ms = clock.tick(60)
     dt = dt_ms / 1000.0
@@ -171,35 +233,74 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    player.update(dt)
-    game.check_finish(player, total_time)
 
+    # Agent observes
+    state_old = agent.get_state(player, game)
+
+    # Agent acts
+    action = agent.get_action(state_old)
+
+    # Optional: clamp/scale mx to something sane
+    action[0] = max(-1.0, min(1.0, action[0]))  # keep mx in [-1, 1]
+
+    # Step the game with the action
+    player.update(dt, action)
+    # Check finish
+    finished = game.check_finish(player, total_time)
+
+    # Build next state
+    state_new = agent.get_state(player, game)
+
+    # Compute reward (simple shaping example)
+    prev_dist = state_old[-1]
+    new_dist = state_new[-1]
+    reward = 0.0
+    reward += 1000.0 if finished else 0.0
+    reward += (prev_dist - new_dist) * 1000
+    reward -= 0.01
+
+    # TIMEOUT CHECK
+    time_since_finish = (total_time - game.last_finish) / 1000.0
+    done = False
+    if finished:
+        done = True
+    elif time_since_finish >= 30:
+        reward -= 100.0   # punish for taking too long
+        done = True
+        game.last_finish = total_time  # reset the timer so next run starts fresh
+        player.pos = game.start_pos.copy() 
+        player.velocity = pygame.math.Vector2(0, 0)  # stop sliding
+        player.z_pos = 0
+        player.z_velocity = 0 # respawn at start
+
+    # Train & remember
+    agent.train_short_memory(state_old, action, reward, state_new, done)
+    agent.remember(state_old, action, reward, state_new, done)
+    if done:
+        agent.n_games += 1
     screen.fill((0, 0, 0))
 
-    # Player render
     angle_degrees = -math.degrees(player.yaw) - 90
     rotated_surface = pygame.transform.rotate(player.player_surface, angle_degrees)
     rotated_rect = rotated_surface.get_rect(center=player.pos)
     screen.blit(bg_surface, (0, 0))
 
-    # Start/End zone visuals
     screen.blit(start, (game.start_pos.x - 50, game.start_pos.y - 50))
     screen.blit(end, (game.end_pos.x - 50, game.end_pos.y - 50))
 
     screen.blit(rotated_surface, rotated_rect)
 
-    # Direction indicator
     dir_x = player.pos.x + math.cos(player.yaw) * 50
     dir_y = player.pos.y + math.sin(player.yaw) * 50
     pygame.draw.circle(screen, (128, 128, 128), (int(dir_x), int(dir_y)), 5)
 
-    # Debug info
     info_lines = [
+        f"EPISODE: {agent.n_games}",
         f"pos: ({player.pos.x:.2f}, {player.pos.y:.2f})",
         f"vel: ({player.velocity.x:.2f}, {player.velocity.y:.2f})",
         f"grounded: {player.on_ground}",
-        f"alpha: {player.player_surface.get_alpha()}",
-        f"z_pos: {player.z_pos:.2f}"
+        f"z_pos: {player.z_pos:.2f}",
+        f"reward:{reward:.6f}"
     ]
     y_offset = 10
     for line in info_lines:
