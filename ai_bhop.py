@@ -6,15 +6,15 @@ import numpy as np
 from collections import deque
 from model import Linear_QNet, QTrainer
 
-MOUSE_SENSITIVITY = 0.2
-MAX_SPEED = 200
-ACCELERATE = 7
-AIR_ACCELERATE = 1
+MOUSE_SENSITIVITY = 0.5
+MAX_SPEED = 400
+ACCELERATE = 14
+AIR_ACCELERATE = 2
 FRICTION = 10
-GRAVITY = 900
-AIR_SPEED_CAP = 30
+GRAVITY = 1000
+AIR_SPEED_CAP = 60
 MAX_MEMORY = 100_000
-BATCH_SIZE = 1000
+BATCH_SIZE = 128
 LR = 0.001
 
 class Agent:
@@ -34,7 +34,7 @@ class Agent:
         pos_x, pos_y = player.pos.x/1000.0, player.pos.y/1000.0
         vel_x, vel_y = player.velocity.x/MAX_SPEED, player.velocity.y/MAX_SPEED
         z_pos = player.z_pos/40.0   # pick your max jump height
-        distance = player.pos.distance_to(game.end_pos) / math.hypot(1000,1000)
+        distance = player.pos.distance_to(game.end_pos.copy()) / math.hypot(1000,1000)
         return np.array([yaw, pos_x, pos_y, vel_x, vel_y, z_pos, distance], dtype=float)
 
     def remember(self, state, action, reward, next_state, done):
@@ -56,7 +56,7 @@ class Agent:
 
     def get_action(self, state):
         # random moves: exploration
-        self.epsilon = max(0, 80 - self.n_games)
+        self.epsilon = max(5, 80 - self.n_games)
 
         state0 = torch.tensor(state, dtype=torch.float)
         prediction = self.model(state0)
@@ -69,7 +69,7 @@ class Agent:
         else:
             # exploit: use model prediction
             mx = prediction[0].item()  # first output = mouse delta
-            buttons = [1 if p > 0 else 0 for p in prediction[1:].tolist()]  
+            buttons = [1 if p > 0 else 0 for p in prediction[1:].tolist()]
             action = [mx] + buttons
 
         return action
@@ -241,7 +241,8 @@ while running:
     action = agent.get_action(state_old)
 
     # Optional: clamp/scale mx to something sane
-    action[0] = max(-1.0, min(1.0, action[0]))  # keep mx in [-1, 1]
+    RANGE_MX = 20.0
+    action[0] = max(-RANGE_MX, min(RANGE_MX, action[0]))
 
     # Step the game with the action
     player.update(dt, action)
@@ -255,17 +256,17 @@ while running:
     prev_dist = state_old[-1]
     new_dist = state_new[-1]
     reward = 0.0
-    reward += 1000.0 if finished else 0.0
-    reward += (prev_dist - new_dist) * 1000
-    reward -= 0.01
+    reward += 50.0 if finished else 0.0
+    reward += (prev_dist - new_dist) * 10.0        # per-step progress reward
+    reward -= 0.01                                 # time penalty
 
     # TIMEOUT CHECK
     time_since_finish = (total_time - game.last_finish) / 1000.0
     done = False
     if finished:
         done = True
-    elif time_since_finish >= 30:
-        reward -= 100.0   # punish for taking too long
+    elif time_since_finish >= 15:
+        reward -= 5.0   # punish for taking too long
         done = True
         game.last_finish = total_time  # reset the timer so next run starts fresh
         player.pos = game.start_pos.copy() 
@@ -273,11 +274,17 @@ while running:
         player.z_pos = 0
         player.z_velocity = 0 # respawn at start
 
+    if done:
+        agent.n_games += 1
+        if agent.n_games % 10 == 0:
+            agent.model.save(f"model_ep{agent.n_games}.pth")
+        print(f"EP {agent.n_games} reward={reward:.2f}")
+
+    if done and len(agent.memory)>=BATCH_SIZE:
+        agent.train_long_memory()
     # Train & remember
     agent.train_short_memory(state_old, action, reward, state_new, done)
     agent.remember(state_old, action, reward, state_new, done)
-    if done:
-        agent.n_games += 1
     screen.fill((0, 0, 0))
 
     angle_degrees = -math.degrees(player.yaw) - 90

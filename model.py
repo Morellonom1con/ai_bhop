@@ -48,7 +48,7 @@ class QTrainer:
             next_state = next_state.unsqueeze(0)
             action = action.unsqueeze(0)
             reward = reward.unsqueeze(0)
-            done = (done, )
+            done = (done,)
 
         # preds: (batch, action_dim)
         pred = self.model(state)
@@ -63,7 +63,7 @@ class QTrainer:
         for idx in range(batch_size):
             r = reward[idx]
             if not done[idx]:
-                Q_new = r + self.gamma * torch.max(next_pred[idx]).item()
+                Q_new = r.item() + self.gamma * torch.max(next_pred[idx]).item()
             else:
                 Q_new = r.item()
 
