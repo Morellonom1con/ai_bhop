@@ -91,11 +91,11 @@ class Player:
 
     def jump(self, jump_pressed):
         if jump_pressed and self.on_ground:
-            self.z_velocity = -250
+            self.z_velocity = 250
             self.on_ground = False
 
     def handle_jump(self, dt):
-        self.z_velocity += GRAVITY * dt
+        self.z_velocity -= GRAVITY * dt
         self.z_pos += self.z_velocity * dt
         if self.z_pos >= 0:
             self.z_pos = 0

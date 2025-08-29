@@ -258,7 +258,7 @@ while running:
     reward = 0.0
     reward += 50.0 if finished else 0.0
     reward += (prev_dist - new_dist) * 10.0        # per-step progress reward
-    reward -= 0.01                                 # time penalty
+    #reward -= 0.01                                 # time penalty
 
     # TIMEOUT CHECK
     time_since_finish = (total_time - game.last_finish) / 1000.0
